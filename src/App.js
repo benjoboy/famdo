@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import "@progress/kendo-theme-bootstrap/dist/all.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-function App() {
+import Register from "./pages/Register";
+import { StateProvider } from "./state/StateProvider";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import DrawerRouterContainer from "./components/DrawerRouterContainer";
+
+export const App = () => {
+  useEffect(() => {
+    document.title = "Fam.do";
+  });
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Router>
+        <DrawerRouterContainer>
+          <Switch>
+            <Route exact={false} path="/" component={Register} />
+          </Switch>
+        </DrawerRouterContainer>
+      </Router>
     </div>
   );
-}
-
-export default App;
+};
