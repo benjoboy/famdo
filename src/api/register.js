@@ -1,26 +1,20 @@
-export async function loginApi(
-  username,
-  password,
-  name,
-  surname,
-  email,
-  password
-) {
+import { BASE_API_URL } from "./constants";
+
+export async function registerApi(username, password, name, surname, email) {
   try {
-    const response = await fetch(`${BASE_API_URL}/auth/login`, {
+    const response = await fetch(`${BASE_API_URL}/user/`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, password, name, surname, email }),
     });
-    const json = await response.json();
-    if (200 === response.status) {
-      const { token } = json;
-      return token;
+    const user = await response.json();
+    if (201 === response.status) {
+      console.log(user, "here");
+      return user;
     } else {
-      const { error } = json;
-      throw error;
+      throw user;
     }
   } catch (e) {
     if ("string" === typeof e) {

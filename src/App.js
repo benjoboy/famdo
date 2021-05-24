@@ -15,11 +15,13 @@ export const App = () => {
   return (
     <div className="App">
       <Router>
-        <DrawerRouterContainer>
-          <Switch>
-            <Route exact={false} path="/" component={Register} />
-          </Switch>
-        </DrawerRouterContainer>
+        <StateProvider>
+          <DrawerRouterContainer>
+            <Switch>
+              <Route exact={false} path="/" component={Register} />
+            </Switch>
+          </DrawerRouterContainer>
+        </StateProvider>
       </Router>
     </div>
   );

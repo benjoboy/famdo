@@ -1,11 +1,13 @@
 export const stateReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      sessionStorage.setItem("jwtToken", action.jwtToken);
+      console.log(action.user);
       return {
         ...state,
         isLoggedIn: true,
-        authToken: action.jwtToken,
+        name: action.user.name,
+        surname: action.user.surname,
+        email: action.user.email,
       };
     case "LOGOUT":
       sessionStorage.clear();

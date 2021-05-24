@@ -9,10 +9,25 @@ import {
 } from "../components/form/validators";
 import CustomInput from "../components/form/CustomInput";
 import PasswordInput from "../components/form/PasswordInput";
+import { registerApi } from "../api/register";
+import { useAppState } from "../state/state.context";
 
 export default function Register() {
-  const handleSubmit = (data) => {
-    alert(JSON.stringify(data));
+  const { dispatch } = useAppState();
+  const handleSubmit = async (data) => {
+    try {
+      const user = await registerApi(
+        data.username,
+        data.password,
+        data.name,
+        data.surname,
+        data.email
+      );
+      dispatch({ type: "LOGIN", user: user });
+    } catch (e) {
+      console.log("error regiser");
+    } finally {
+    }
   };
   return (
     <div id="Profile" className="pt-5 d-flex justify-content-center">
