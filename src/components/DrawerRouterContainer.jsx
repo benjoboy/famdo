@@ -9,6 +9,8 @@ const items = [
   { name: "profile", icon: "k-i-user", route: "/profile" },
   { separator: true },
   { name: "info", icon: "k-i-information", route: "/info" },
+  { name: "login", icon: "k-i-information", route: "/login" },
+  { name: "register", icon: "k-i-information", route: "/register" },
 ];
 
 class DrawerRouterContainer extends React.Component {
@@ -68,6 +70,7 @@ class DrawerRouterContainer extends React.Component {
         >
           <DrawerContent>{this.props.children}</DrawerContent>
         </Drawer>
+        <h1></h1>
       </React.Fragment>
     );
   }

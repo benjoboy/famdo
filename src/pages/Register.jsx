@@ -30,7 +30,7 @@ export default function Register() {
     }
   };
   return (
-    <div id="Profile" className="pt-5 d-flex justify-content-center">
+    <div id="Register" className="pt-5 d-flex justify-content-center">
       <Form
         onSubmit={handleSubmit}
         render={(formRenderProps) => (

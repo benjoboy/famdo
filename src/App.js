@@ -6,6 +6,8 @@ import Register from "./pages/Register";
 import { StateProvider } from "./state/StateProvider";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
+import Footer from "./components/Footer";
+import Login from "./pages/Login";
 
 export const App = () => {
   useEffect(() => {
@@ -18,9 +20,11 @@ export const App = () => {
         <StateProvider>
           <DrawerRouterContainer>
             <Switch>
-              <Route exact={false} path="/" component={Register} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
             </Switch>
           </DrawerRouterContainer>
+          <Footer />
         </StateProvider>
       </Router>
     </div>

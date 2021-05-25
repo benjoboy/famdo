@@ -10,7 +10,6 @@ export const stateReducer = (state, action) => {
         email: action.user.email,
       };
     case "LOGOUT":
-      sessionStorage.clear();
       return {
         ...state,
         isLoggedIn: false,
