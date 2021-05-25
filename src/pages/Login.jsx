@@ -7,9 +7,21 @@ import {
 } from "../components/form/validators";
 import PasswordInput from "../components/form/PasswordInput";
 import CustomInput from "../components/form/CustomInput";
+import { loginApi } from "../api/login";
+import { useAppState } from "../state/state.context";
 
 export default function Login() {
-  const handleSubmit = (data) => {};
+  const { dispatch } = useAppState();
+
+  const handleSubmit = async (data) => {
+    try {
+      const user = await loginApi(data.email, data.password);
+      dispatch({ type: "LOGIN", user: user });
+    } catch (e) {
+      console.log(e, "error login");
+    } finally {
+    }
+  };
 
   return (
     <div id="Login" className="pt-5 d-flex justify-content-center">

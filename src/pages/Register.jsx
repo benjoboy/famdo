@@ -17,7 +17,6 @@ export default function Register() {
   const handleSubmit = async (data) => {
     try {
       const user = await registerApi(
-        data.username,
         data.password,
         data.name,
         data.surname,

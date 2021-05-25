@@ -1,13 +1,13 @@
 import { BASE_API_URL } from "./constants";
 
-export async function registerApi(password, name, surname, email) {
+export async function loginApi(email, password) {
   try {
-    const response = await fetch(`${BASE_API_URL}/user/`, {
+    const response = await fetch(`${BASE_API_URL}/user/login`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ password, name, surname, email }),
+      body: JSON.stringify({ password, email }),
     });
     const user = await response.json();
     if (201 === response.status) {
