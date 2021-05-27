@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
+import { useAppState } from "../state/state.context";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
@@ -14,36 +15,41 @@ const items = [
   { name: "register", icon: "k-i-information", route: "/register" },
 ];
 
-class DrawerRouterContainer extends React.Component {
-  state = {
-    expanded: true,
-    selectedId: items.findIndex((x) => x.selected === true),
-    isSmallerScreen: window.innerWidth < 768,
+export default function DrawerRouterContainer(props) {
+  const [expanded, setExpanded] = useState(true);
+  const [selectedId, setSelectedId] = useState(
+    items.findIndex((x) => x.selected === true)
+  );
+  const [isSmallerScreen, setIsSmallerScreen] = useState(
+    window.innerWidth < 768
+  );
+  const history = useHistory();
+  const { dispatch } = useAppState();
+
+  const resizeWindow = () => {
+    setIsSmallerScreen(window.innerWidth < 768);
   };
 
-  componentDidMount() {
-    window.addEventListener("resize", this.resizeWindow);
-    this.resizeWindow();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resizeWindow);
-  }
-
-  resizeWindow = () => {
-    this.setState({ isSmallerScreen: window.innerWidth < 768 });
+  const handleClick = (e) => {
+    setExpanded(!expanded);
   };
 
-  handleClick = () => {
-    this.setState((e) => ({ expanded: !e.expanded }));
+  const handleSelect = (e) => {
+    setSelectedId(e.itemIndex);
+    setExpanded(false);
+    history.push(e.itemTarget.props.route);
   };
 
-  handleSelect = (e) => {
-    this.setState({ selectedId: e.itemIndex, expanded: false });
-    this.props.history.push(e.itemTarget.props.route);
-  };
+  useEffect(() => {
+    dispatch({ type: "CHECK_SESSION" });
+    window.addEventListener("resize", resizeWindow);
+    resizeWindow();
+    return () => {
+      window.removeEventListener("resize", resizeWindow);
+    };
+  }, []);
 
-  getSelectedItem = (pathName) => {
+  const getSelectedItem = (pathName) => {
     let currentPath = items.find((item) => item.route === pathName);
     if (currentPath) {
       if (currentPath.name) {
@@ -51,31 +57,27 @@ class DrawerRouterContainer extends React.Component {
       }
     }
   };
-  render() {
-    let selected = this.getSelectedItem(this.props.location.pathname);
+  let selected = getSelectedItem(history.location.pathname);
 
-    return (
-      <React.Fragment>
-        <Header onClick={this.handleClick} />
-        <Drawer
-          expanded={this.state.expanded}
-          animation={{ duration: 100 }}
-          items={items.map((item) => ({
-            ...item,
-            text: item.name,
-            selected: item.name === selected,
-          }))}
-          position="start"
-          mode={this.state.isSmallerScreen ? "overlay" : "push"}
-          mini={this.state.isSmallerScreen ? false : true}
-          onOverlayClick={this.handleClick}
-          onSelect={this.handleSelect}
-        >
-          <DrawerContent>{this.props.children}</DrawerContent>
-        </Drawer>
-      </React.Fragment>
-    );
-  }
+  return (
+    <React.Fragment>
+      <Header onClick={handleClick} />
+      <Drawer
+        expanded={expanded}
+        animation={{ duration: 100 }}
+        items={items.map((item) => ({
+          ...item,
+          text: item.name,
+          selected: item.name === selected,
+        }))}
+        position="start"
+        mode={isSmallerScreen ? "overlay" : "push"}
+        mini={isSmallerScreen ? false : true}
+        onOverlayClick={handleClick}
+        onSelect={handleSelect}
+      >
+        <DrawerContent>{props.children}</DrawerContent>
+      </Drawer>
+    </React.Fragment>
+  );
 }
-
-export default withRouter(DrawerRouterContainer);

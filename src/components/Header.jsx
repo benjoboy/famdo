@@ -8,11 +8,26 @@ import {
   Avatar,
 } from "@progress/kendo-react-layout";
 import { useAppState } from "../state/state.context";
+import { logoutApi } from "../api/logout";
+import { useHistory } from "react-router";
 
 export default function Header(props) {
   const {
     state: { isLoggedIn },
+    dispatch,
   } = useAppState();
+  const history = useHistory();
+
+  const handleLogout = async (data) => {
+    try {
+      const res = await logoutApi();
+      dispatch({ type: "LOGOUT" });
+    } catch (e) {
+      console.log(e, "error logout");
+    } finally {
+      history.push("/");
+    }
+  };
 
   return (
     <React.Fragment>
@@ -58,7 +73,9 @@ export default function Header(props) {
         <AppBarSection className="actions navbar">
           <ul>
             {isLoggedIn ? (
-              <li>Logout</li>
+              <li>
+                <a onClick={handleLogout}>Logout</a>
+              </li>
             ) : (
               <li>
                 {" "}

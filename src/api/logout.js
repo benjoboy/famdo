@@ -1,6 +1,6 @@
 import { BASE_API_URL } from "./constants";
 
-export async function loginApi(email, password) {
+export async function logoutApi() {
   try {
     const response = await fetch(`${BASE_API_URL}/user/logout`, {
       method: "POST",
@@ -8,11 +8,11 @@ export async function loginApi(email, password) {
         "content-type": "application/json",
       },
     });
-    const user = await response.json();
-    if (201 === response.status) {
-      return user;
+    const res = await response.json();
+    if (200 === response.status) {
+      return res;
     } else {
-      throw user;
+      throw res;
     }
   } catch (e) {
     if ("string" === typeof e) {

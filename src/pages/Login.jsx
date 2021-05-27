@@ -9,9 +9,11 @@ import PasswordInput from "../components/form/PasswordInput";
 import CustomInput from "../components/form/CustomInput";
 import { loginApi } from "../api/login";
 import { useAppState } from "../state/state.context";
+import { useHistory } from "react-router";
 
 export default function Login() {
   const { dispatch } = useAppState();
+  const history = useHistory();
 
   const handleSubmit = async (data) => {
     try {
@@ -20,6 +22,7 @@ export default function Login() {
     } catch (e) {
       console.log(e, "error login");
     } finally {
+      history.push("/");
     }
   };
 
@@ -53,6 +56,9 @@ export default function Login() {
               </Button>
               <Button onClick={formRenderProps.onFormReset}>Clear</Button>
             </div>
+            <p className="pt-2">
+              Dont have an account? <a href="/register">Register here</a>
+            </p>
           </FormElement>
         )}
       />

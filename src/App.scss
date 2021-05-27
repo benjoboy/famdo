@@ -16,7 +16,7 @@ body {
   margin: 0 10px;
 }
 li:hover,
-a:hover {
+.navbar a:hover {
   cursor: pointer;
   color: #84cef1;
 }
@@ -31,7 +31,7 @@ a:hover {
   height: calc(100vh - 53px);
 }
 
-a {
+.navbar a {
   color: white;
   text-decoration: none;
 }

@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import { StateProvider } from "./state/StateProvider";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
-import Footer from "./components/Footer";
 import Login from "./pages/Login";
 
 export const App = () => {

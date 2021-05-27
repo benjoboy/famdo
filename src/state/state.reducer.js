@@ -1,7 +1,7 @@
 export const stateReducer = (state, action) => {
   switch (action.type) {
     case "LOGIN":
-      console.log(action.user);
+      sessionStorage.setItem("user", action.user);
       return {
         ...state,
         isLoggedIn: true,
@@ -10,10 +10,14 @@ export const stateReducer = (state, action) => {
         email: action.user.email,
       };
     case "LOGOUT":
+      console.log("logout");
+      sessionStorage.clear();
       return {
         ...state,
         isLoggedIn: false,
-        authToken: undefined,
+        name: "",
+        surname: "",
+        email: "",
       };
     case "SELECT_FILTER":
       return {
@@ -21,12 +25,14 @@ export const stateReducer = (state, action) => {
         selectedFilter: action.filter,
       };
     case "CHECK_SESSION":
-      const loggedUserToken = sessionStorage.getItem("jwtToken");
-      if (loggedUserToken)
+      const loggedUser = sessionStorage.getItem("user");
+      if (loggedUser)
         return {
           ...state,
           isLoggedIn: true,
-          authToken: loggedUserToken,
+          name: loggedUser.name,
+          surname: loggedUser.surname,
+          email: loggedUser.email,
         };
       else
         return {
