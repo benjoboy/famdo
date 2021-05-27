@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "@progress/kendo-theme-bootstrap/dist/all.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.scss";
 
 import Register from "./pages/Register";
 import { StateProvider } from "./state/StateProvider";
@@ -24,7 +25,6 @@ export const App = () => {
               <Route exact path="/login" component={Login} />
             </Switch>
           </DrawerRouterContainer>
-          <Footer />
         </StateProvider>
       </Router>
     </div>

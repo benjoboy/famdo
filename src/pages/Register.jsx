@@ -14,6 +14,7 @@ import { useAppState } from "../state/state.context";
 
 export default function Register() {
   const { dispatch } = useAppState();
+
   const handleSubmit = async (data) => {
     try {
       const user = await registerApi(
@@ -28,6 +29,7 @@ export default function Register() {
     } finally {
     }
   };
+
   return (
     <div id="Register" className="pt-5 d-flex justify-content-center">
       <Form

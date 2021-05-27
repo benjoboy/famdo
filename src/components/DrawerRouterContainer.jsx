@@ -2,6 +2,7 @@ import React from "react";
 
 import { withRouter } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
+import Header from "./Header";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
@@ -44,8 +45,10 @@ class DrawerRouterContainer extends React.Component {
 
   getSelectedItem = (pathName) => {
     let currentPath = items.find((item) => item.route === pathName);
-    if (currentPath.name) {
-      return currentPath.name;
+    if (currentPath) {
+      if (currentPath.name) {
+        return currentPath.name;
+      }
     }
   };
   render() {
@@ -53,7 +56,7 @@ class DrawerRouterContainer extends React.Component {
 
     return (
       <React.Fragment>
-        {/*TODO header*/}
+        <Header onClick={this.handleClick} />
         <Drawer
           expanded={this.state.expanded}
           animation={{ duration: 100 }}
@@ -70,7 +73,6 @@ class DrawerRouterContainer extends React.Component {
         >
           <DrawerContent>{this.props.children}</DrawerContent>
         </Drawer>
-        <h1></h1>
       </React.Fragment>
     );
   }
