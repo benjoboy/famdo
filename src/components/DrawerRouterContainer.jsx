@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { useHistory, withRouter } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
+import { loggedIn } from "../api/logged_in";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
@@ -11,15 +12,11 @@ const items = [
   { name: "profile", icon: "k-i-user", route: "/profile" },
   { separator: true },
   { name: "info", icon: "k-i-information", route: "/info" },
-  { name: "login", icon: "k-i-information", route: "/login" },
-  { name: "register", icon: "k-i-information", route: "/register" },
+  /*{ name: "info", icon: "k-i-information", route: "/login" },*/
 ];
 
 export default function DrawerRouterContainer(props) {
   const [expanded, setExpanded] = useState(true);
-  const [selectedId, setSelectedId] = useState(
-    items.findIndex((x) => x.selected === true)
-  );
   const [isSmallerScreen, setIsSmallerScreen] = useState(
     window.innerWidth < 768
   );
@@ -35,7 +32,6 @@ export default function DrawerRouterContainer(props) {
   };
 
   const handleSelect = (e) => {
-    setSelectedId(e.itemIndex);
     setExpanded(false);
     history.push(e.itemTarget.props.route);
   };
@@ -50,7 +46,8 @@ export default function DrawerRouterContainer(props) {
   }, []);
 
   const getSelectedItem = (pathName) => {
-    let currentPath = items.find((item) => item.route === pathName);
+    let currentPath;
+    currentPath = items.find((item) => item.route === pathName);
     if (currentPath) {
       if (currentPath.name) {
         return currentPath.name;

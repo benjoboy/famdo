@@ -1,10 +1,9 @@
 import { BASE_API_URL } from "./constants";
 
-export async function logoutApi() {
+export async function loggedIn() {
   try {
-    const response = await fetch(`${BASE_API_URL}/user/logout`, {
-      method: "POST",
-      credentials: "include",
+    const response = await fetch(`${BASE_API_URL}/user/logged_in`, {
+      method: "GET",
       headers: {
         "content-type": "application/json",
       },

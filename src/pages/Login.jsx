@@ -19,10 +19,9 @@ export default function Login() {
     try {
       const user = await loginApi(data.email, data.password);
       dispatch({ type: "LOGIN", user: user });
+      history.push("/");
     } catch (e) {
       console.log(e, "error login");
-    } finally {
-      history.push("/");
     }
   };
 

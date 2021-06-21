@@ -4,6 +4,7 @@ export async function registerApi(password, name, surname, email) {
   try {
     const response = await fetch(`${BASE_API_URL}/user/`, {
       method: "POST",
+      credentials: "include",
       headers: {
         "content-type": "application/json",
       },

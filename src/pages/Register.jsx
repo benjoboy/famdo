@@ -11,9 +11,11 @@ import CustomInput from "../components/form/CustomInput";
 import PasswordInput from "../components/form/PasswordInput";
 import { registerApi } from "../api/register";
 import { useAppState } from "../state/state.context";
+import { useHistory } from "react-router";
 
 export default function Register() {
   const { dispatch } = useAppState();
+  const history = useHistory();
 
   const handleSubmit = async (data) => {
     try {
@@ -27,6 +29,7 @@ export default function Register() {
     } catch (e) {
       console.log("error regiser");
     } finally {
+      history.push("/");
     }
   };
 

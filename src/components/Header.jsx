@@ -21,6 +21,7 @@ export default function Header(props) {
   const handleLogout = async (data) => {
     try {
       const res = await logoutApi();
+      console.log(res);
       dispatch({ type: "LOGOUT" });
     } catch (e) {
       console.log(e, "error logout");
@@ -101,7 +102,7 @@ export default function Header(props) {
         </AppBarSection>
 
         <AppBarSection>
-          <Avatar shape="circle" type="image"></Avatar>
+          <Avatar href="/login" shape="circle" type="image"></Avatar>
         </AppBarSection>
       </AppBar>
     </React.Fragment>
