@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
-import { loggedIn } from "../api/logged_in";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },

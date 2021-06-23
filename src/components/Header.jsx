@@ -102,7 +102,14 @@ export default function Header(props) {
         </AppBarSection>
 
         <AppBarSection>
-          <Avatar href="/login" shape="circle" type="image"></Avatar>
+          <Avatar shape="circle" type="image"></Avatar>
+        </AppBarSection>
+        <AppBarSection>
+          <ul>
+            <li>
+              <a href="/settings ">settings</a>
+            </li>
+          </ul>
         </AppBarSection>
       </AppBar>
     </React.Fragment>
