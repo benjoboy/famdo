@@ -21,6 +21,6 @@ export async function loginApi(email, password) {
     if ("string" === typeof e) {
       throw e;
     }
-    throw "Unknown error";
+    throw e;
   }
 }

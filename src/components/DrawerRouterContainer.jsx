@@ -36,13 +36,14 @@ export default function DrawerRouterContainer(props) {
   };
 
   useEffect(() => {
+    console.log("drawerRouterContainer onMount called");
     dispatch({ type: "CHECK_SESSION" });
     window.addEventListener("resize", resizeWindow);
     resizeWindow();
     return () => {
       window.removeEventListener("resize", resizeWindow);
     };
-  }, []);
+  }, [dispatch]);
 
   const getSelectedItem = (pathName) => {
     let currentPath;

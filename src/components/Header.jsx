@@ -75,7 +75,7 @@ export default function Header(props) {
           <ul>
             {isLoggedIn ? (
               <li>
-                <a onClick={handleLogout}>Logout</a>
+                <div onClick={handleLogout}>Logout</div>
               </li>
             ) : (
               <li>
@@ -104,10 +104,10 @@ export default function Header(props) {
         <AppBarSection>
           <Avatar shape="circle" type="image"></Avatar>
         </AppBarSection>
-        <AppBarSection>
+        <AppBarSection className="actions navbar">
           <ul>
             <li>
-              <a href="/settings ">settings</a>
+              <a href="/settings ">Settings</a>
             </li>
           </ul>
         </AppBarSection>

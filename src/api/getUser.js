@@ -19,6 +19,6 @@ export async function getUser() {
     if ("string" === typeof e) {
       throw e;
     }
-    throw "Unknown error";
+    throw e;
   }
 }

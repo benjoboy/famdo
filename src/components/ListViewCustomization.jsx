@@ -1,8 +1,17 @@
-import { ListViewHeader, ListViewFooter } from "@progress/kendo-react-listview";
+import { ListViewHeader } from "@progress/kendo-react-listview";
 import { Avatar } from "@progress/kendo-react-layout";
-
+import { acceptInvite } from "../api/acceptInvite";
 export default function InviteItem(props) {
   let family = props.dataItem;
+  const handleAccept = async (id) => {
+    const res = await acceptInvite(id);
+    if (res.status === "accepted") {
+      console.log("accepted");
+      window.location.reload();
+    } else {
+      console.log(res);
+    }
+  };
 
   return (
     <div
@@ -27,9 +36,7 @@ export default function InviteItem(props) {
       <div className="col-sm-4">
         <div className="k-chip k-chip-filled k-chip-success">
           <div
-            onClick={() => {
-              console.log("hello");
-            }}
+            onClick={() => handleAccept(family._id)}
             className="k-chip-content"
           >
             <div className="k-icon k-i-check" />
@@ -37,8 +44,10 @@ export default function InviteItem(props) {
           </div>
         </div>
         <div className="k-chip k-chip-filled k-chip-error">
-          <div className="k-icon k-i-close" />
-          <div className="k-chip-content">Decline Invite</div>
+          <div className="k-chip-content">
+            <div className="k-icon k-i-close" />
+            Decline Invite
+          </div>
         </div>
       </div>
     </div>

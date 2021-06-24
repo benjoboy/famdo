@@ -21,6 +21,6 @@ export async function registerApi(password, name, surname, email) {
     if ("string" === typeof e) {
       throw e;
     }
-    throw "Unknown error";
+    throw e;
   }
 }
