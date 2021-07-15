@@ -1,5 +1,4 @@
 import { ListViewHeader } from "@progress/kendo-react-listview";
-import { Avatar } from "@progress/kendo-react-layout";
 import { acceptInvite } from "../api/acceptInvite";
 import { declineInvite } from "../api/declineInvite";
 export default function InviteItem(props) {
@@ -9,15 +8,14 @@ export default function InviteItem(props) {
       const res = await acceptInvite(id);
       if (res.status === "accepted") {
         console.log("accepted");
-        window.location.reload();
+        const families = props.families.filter((family) => family._id !== id);
       } else {
         console.log(res);
       }
     } else {
       const res = await declineInvite(id);
-      if (res.status === "accepted") {
-        console.log("declined");
-        window.location.reload();
+      if (res.status === "declined") {
+        const families = props.families.filter((family) => family._id !== id);
       } else {
         console.log(res);
       }

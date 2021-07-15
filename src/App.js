@@ -13,7 +13,7 @@ import Settings from "./pages/Settings";
 export const App = () => {
   useEffect(() => {
     document.title = "Fam.do";
-  });
+  }, []);
 
   return (
     <div className="App">

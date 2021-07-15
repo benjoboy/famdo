@@ -5,7 +5,7 @@ import InviteItem, { MyHeader } from "../components/ListViewCustomization";
 import { ListView } from "@progress/kendo-react-listview";
 
 export default function Settings() {
-  const [invites, setInvites] = useState([]);
+  const [families, setFamilies] = useState([]);
 
   const loadInvites = async () => {
     const user = await getUser();
@@ -14,7 +14,8 @@ export default function Settings() {
       for (const invite of user.invitedFamilies) {
         families.push(await getFamily(invite.id));
       }
-      setInvites(families);
+      console.log("fam", families);
+      setFamilies(families);
     }
   };
 
@@ -22,11 +23,18 @@ export default function Settings() {
     loadInvites();
   }, []);
 
-  const listOfInvites = invites.map((invite) => <li>{invite.name}</li>);
+  const MyCustomItem = (props) => (
+    <InviteItem {...props} families={families} setFamilies={setFamilies} />
+  );
 
   return (
     <div>
-      <ListView header={MyHeader} data={invites} item={InviteItem} />
+      <ListView
+        setFamilies={setFamilies}
+        header={MyHeader}
+        data={families}
+        item={MyCustomItem}
+      />
     </div>
   );
 }

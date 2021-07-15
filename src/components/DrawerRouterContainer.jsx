@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
+import { loggedIn } from "../api/loggedIn";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
@@ -15,7 +16,7 @@ const items = [
 ];
 
 export default function DrawerRouterContainer(props) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [isSmallerScreen, setIsSmallerScreen] = useState(
     window.innerWidth < 768
   );
@@ -34,10 +35,18 @@ export default function DrawerRouterContainer(props) {
     setExpanded(false);
     history.push(e.itemTarget.props.route);
   };
+  const checkLoggedIn = async (data) => {
+    try {
+      const user = await loggedIn();
+      if (user.logged_in) dispatch({ type: "LOGIN", user: user.user });
+    } catch (e) {
+      console.log(e, "error login");
+    }
+  };
 
   useEffect(() => {
     console.log("drawerRouterContainer onMount called");
-    dispatch({ type: "CHECK_SESSION" });
+    checkLoggedIn();
     window.addEventListener("resize", resizeWindow);
     resizeWindow();
     return () => {
