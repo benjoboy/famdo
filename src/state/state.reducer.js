@@ -8,16 +8,20 @@ export const stateReducer = (state, action) => {
         name: action.user.name,
         surname: action.user.surname,
         email: action.user.email,
+        families: action.user.families,
+        family: action.family,
       };
     case "LOGOUT":
-      console.log("logout");
       sessionStorage.clear();
+
       return {
         ...state,
         isLoggedIn: false,
         name: "",
         surname: "",
         email: "",
+        families: [],
+        family: null,
       };
     case "SELECT_FILTER":
       return {

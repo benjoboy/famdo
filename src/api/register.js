@@ -12,7 +12,6 @@ export async function registerApi(password, name, surname, email) {
     });
     const user = await response.json();
     if (201 === response.status) {
-      console.log(user, "here");
       return user;
     } else {
       throw user;

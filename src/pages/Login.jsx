@@ -10,6 +10,7 @@ import CustomInput from "../components/form/CustomInput";
 import { loginApi } from "../api/login";
 import { useAppState } from "../state/state.context";
 import { useHistory } from "react-router";
+import { getFamily } from "../api/getFamily";
 
 export default function Login() {
   const { dispatch } = useAppState();
@@ -18,7 +19,12 @@ export default function Login() {
   const handleSubmit = async (data) => {
     try {
       const user = await loginApi(data.email, data.password);
-      dispatch({ type: "LOGIN", user: user });
+      let family;
+      if (user.families && user.families.length !== 0) {
+        family = await getFamily(user.families[0].id);
+      }
+      console.log("login fam", family);
+      dispatch({ type: "LOGIN", user: user, family: family });
       history.push("/");
     } catch (e) {
       console.log(e, "error login");

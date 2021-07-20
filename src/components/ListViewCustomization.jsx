@@ -8,14 +8,14 @@ export default function InviteItem(props) {
       const res = await acceptInvite(id);
       if (res.status === "accepted") {
         console.log("accepted");
-        const families = props.families.filter((family) => family._id !== id);
+        //const families = props.families.filter((family) => family._id !== id);
       } else {
         console.log(res);
       }
     } else {
       const res = await declineInvite(id);
       if (res.status === "declined") {
-        const families = props.families.filter((family) => family._id !== id);
+        //const families = props.families.filter((family) => family._id !== id);
       } else {
         console.log(res);
       }

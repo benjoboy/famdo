@@ -5,10 +5,11 @@ import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
 import { loggedIn } from "../api/loggedIn";
+import { getFamily } from "../api/getFamily";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
-  { name: "planning", icon: "k-i-calendar", route: "/planning" },
+  { name: "schedule", icon: "k-i-calendar", route: "/schedule" },
   { name: "profile", icon: "k-i-user", route: "/profile" },
   { separator: true },
   { name: "info", icon: "k-i-information", route: "/info" },
@@ -35,16 +36,22 @@ export default function DrawerRouterContainer(props) {
     setExpanded(false);
     history.push(e.itemTarget.props.route);
   };
-  const checkLoggedIn = async (data) => {
-    try {
-      const user = await loggedIn();
-      if (user.logged_in) dispatch({ type: "LOGIN", user: user.user });
-    } catch (e) {
-      console.log(e, "error login");
-    }
-  };
 
   useEffect(() => {
+    const checkLoggedIn = async (data) => {
+      try {
+        const res = await loggedIn();
+        let family;
+        if (res.user.families && res.user.families.length > 0) {
+          family = await getFamily(res.user.families[0].id);
+        }
+        if (res.logged_in)
+          dispatch({ type: "LOGIN", user: res.user, family: family });
+      } catch (e) {
+        console.log(e, "error login");
+      }
+    };
+
     console.log("drawerRouterContainer onMount called");
     checkLoggedIn();
     window.addEventListener("resize", resizeWindow);

@@ -7,7 +7,7 @@ export const StateContext = createContext({
   surname: "",
   email: "",
   avatar: null,
-  teamId: 1,
+  family: null,
 });
 
 export function useAppState() {

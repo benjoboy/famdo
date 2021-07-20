@@ -9,6 +9,7 @@ import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
 import Login from "./pages/Login";
 import Settings from "./pages/Settings";
+import Schedule from "./pages/Schedule";
 
 export const App = () => {
   useEffect(() => {
@@ -24,6 +25,7 @@ export const App = () => {
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
               <Route exact path="/settings" component={Settings} />
+              <Route exact path="/schedule" component={Schedule} />
             </Switch>
           </DrawerRouterContainer>
         </StateProvider>

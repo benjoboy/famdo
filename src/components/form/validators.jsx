@@ -1,4 +1,4 @@
-import { getter } from "@progress/kendo-react-common";
+//import { getter } from "@progress/kendo-react-common";
 
 const emailRegex = new RegExp(/\S+@\S+\.\S+/);
 /*const phoneRegex = new RegExp(/^[0-9 ()+-]+$/);
@@ -34,7 +34,7 @@ export const userNameValidator = (value) =>
     : value.length < 5
     ? "User name should be at least 5 characters long."
     : "";
-
+/*
 const userNameGetter = getter("username");
 const emailGetter = getter("email");
 
@@ -54,4 +54,4 @@ export const formValidator = (values) => {
         ? ""
         : "Email is required and should be in a valid format.",
   };
-};
+};*/

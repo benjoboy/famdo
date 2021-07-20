@@ -11,7 +11,6 @@ export async function getFamily(familyId) {
     });
     const res = await response.json();
     if (200 === response.status) {
-      console.log(res);
       return res;
     } else {
       throw res;

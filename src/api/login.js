@@ -12,7 +12,6 @@ export async function loginApi(email, password) {
     });
     const user = await response.json();
     if (201 === response.status) {
-      console.log(user, "here");
       return user;
     } else {
       throw user;
