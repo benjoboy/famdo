@@ -20,8 +20,8 @@ export default function Login() {
     try {
       const user = await loginApi(data.email, data.password);
       let family;
-      if (user.families && user.families.length !== 0) {
-        family = await getFamily(user.families[0].id);
+      if (user.families) {
+        family = await getFamily(user.families);
       }
       console.log("login fam", family);
       dispatch({ type: "LOGIN", user: user, family: family });

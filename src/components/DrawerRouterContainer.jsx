@@ -42,8 +42,8 @@ export default function DrawerRouterContainer(props) {
       try {
         const res = await loggedIn();
         let family;
-        if (res.user.families && res.user.families.length > 0) {
-          family = await getFamily(res.user.families[0].id);
+        if (res.user.families) {
+          family = await getFamily(res.user.families);
         }
         if (res.logged_in)
           dispatch({ type: "LOGIN", user: res.user, family: family });

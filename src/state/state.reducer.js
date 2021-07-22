@@ -20,7 +20,7 @@ export const stateReducer = (state, action) => {
         name: "",
         surname: "",
         email: "",
-        families: [],
+        families: "",
         family: null,
       };
     case "SELECT_FILTER":
