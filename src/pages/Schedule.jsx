@@ -12,10 +12,6 @@ export default function Schedule(props) {
     id: "_id",
   };
 
-  useEffect(() => {
-    console.log("serr", props.schedule);
-  }, [props.schedule]);
-
   return (
     <Scheduler
       defaultView="day"

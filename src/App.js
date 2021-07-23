@@ -13,9 +13,10 @@ import { getFamily } from "./api/getFamily";
 import { useAppState } from "./state/state.context";
 import { deleteEvent } from "./api/deleteEvent";
 import { createEvent } from "./api/createEvent";
+import { updateEvent } from "./api/updateEvent";
 
 export const App = () => {
-  const [family, setFamily] = useState({ schedule: [{ title: "hfe" }] });
+  const [family, setFamily] = useState({ schedule: [] });
   const {
     state: { families },
   } = useAppState();
@@ -55,45 +56,35 @@ export const App = () => {
 
       deleted.forEach(async (deletedEl) => {
         try {
-          console.log("deleted", deletedEl);
-          let event = await deleteEvent(deletedEl._id);
+          await deleteEvent(deletedEl._id);
           setFamily((old) => {
             let schedule = old.schedule.filter(
-              (item) =>
-                deleted.find((current) => current._id === item._id) ===
-                undefined
+              (item) => (deletedEl._id === item._id) === undefined
             );
             let newFamily = { ...old };
             newFamily.schedule = schedule;
-            console.log("new", newFamily);
+            return newFamily;
+          });
+        } catch (e) {
+          console.log(e, "error deleting event");
+        }
+      });
+
+      updated.forEach(async (updatedEl) => {
+        try {
+          await updateEvent(updatedEl);
+          setFamily((old) => {
+            let schedule = old.schedule.map((item) =>
+              updatedEl._id === item._id ? updatedEl : item
+            );
+            let newFamily = { ...old };
+            newFamily.schedule = schedule;
             return newFamily;
           });
         } catch (e) {
           console.log(e, "error creating event");
         }
       });
-
-      // setFamily((old) => {
-      //   let schedule = old.schedule
-      //     .filter(
-      //       (item) =>
-      //         deleted.find((current) => current.id === item.id) === undefined
-      //     )
-      //     .map(
-      //       (item) => updated.find((current) => current.id === item.id) || item
-      //     )
-      //     .concat(
-      //       created.map((item) =>
-      //         Object.assign({}, item, {
-      //           id: guid(),
-      //         })
-      //       )
-      //     );
-      //   let newFamily = { ...old };
-      //   newFamily.schedule = schedule;
-      //   console.log("mew", newFamily);
-      //   return newFamily;
-      // });
     },
     [setFamily]
   );
@@ -103,14 +94,12 @@ export const App = () => {
       try {
         if (families) {
           var family1 = await getFamily(families);
-          console.log(family1);
           const schedule = family1.schedule.map((item) => {
             item.start = new Date(item.start);
             item.end = new Date(item.end);
             return item;
           });
           family1.schedule = schedule;
-          console.log("yello", family1);
           setFamily(family1);
         }
       } catch (e) {
