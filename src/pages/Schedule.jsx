@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Scheduler,
   AgendaView,
@@ -6,6 +6,7 @@ import {
   WeekView,
   MonthView,
 } from "@progress/kendo-react-scheduler";
+import { FormWithCustomEditor } from "../components/scheduler/customForm";
 
 export default function Schedule(props) {
   const modelFields = {

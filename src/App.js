@@ -14,12 +14,33 @@ import { useAppState } from "./state/state.context";
 import { deleteEvent } from "./api/deleteEvent";
 import { createEvent } from "./api/createEvent";
 import { updateEvent } from "./api/updateEvent";
+import useInterval from "./hooks/useInterval";
 
 export const App = () => {
   const [family, setFamily] = useState({ schedule: [] });
   const {
     state: { families },
   } = useAppState();
+
+  const loadFamily = async () => {
+    console.log("updatig family");
+    try {
+      if (families) {
+        var family1 = await getFamily(families);
+        const schedule = family1.schedule.map((item) => {
+          item.start = new Date(item.start);
+          item.end = new Date(item.end);
+          return item;
+        });
+        family1.schedule = schedule;
+        setFamily(family1);
+      }
+    } catch (e) {
+      console.log("error loading family in app");
+    }
+  };
+
+  useInterval(loadFamily, 5000);
 
   /*const deleteEvent = async (data) => {
     try {
@@ -90,22 +111,6 @@ export const App = () => {
   );
 
   useEffect(() => {
-    const loadFamily = async () => {
-      try {
-        if (families) {
-          var family1 = await getFamily(families);
-          const schedule = family1.schedule.map((item) => {
-            item.start = new Date(item.start);
-            item.end = new Date(item.end);
-            return item;
-          });
-          family1.schedule = schedule;
-          setFamily(family1);
-        }
-      } catch (e) {
-        console.log("error loading family in app");
-      }
-    };
     document.title = "Fam.do";
     loadFamily();
   }, [families]);
