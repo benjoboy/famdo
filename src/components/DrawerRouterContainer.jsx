@@ -4,12 +4,13 @@ import { useHistory } from "react-router-dom";
 import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
-import { loggedIn } from "../api/loggedIn";
+import { loggedIn } from "../api/auth/loggedIn";
 import { getFamily } from "../api/getFamily";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
   { name: "schedule", icon: "k-i-calendar", route: "/schedule" },
+  { name: "notes", icon: "k-i-dictionary-add", route: "/notes" },
   { name: "profile", icon: "k-i-user", route: "/profile" },
   { separator: true },
   { name: "info", icon: "k-i-information", route: "/info" },

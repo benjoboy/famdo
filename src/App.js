@@ -9,20 +9,23 @@ import DrawerRouterContainer from "./components/DrawerRouterContainer";
 import Login from "./pages/Login";
 import Settings from "./pages/Settings";
 import Schedule from "./pages/Schedule";
+import Notebook from "./pages/Notebook";
 import { getFamily } from "./api/getFamily";
 import { useAppState } from "./state/state.context";
-import { deleteEvent } from "./api/deleteEvent";
-import { createEvent } from "./api/createEvent";
-import { updateEvent } from "./api/updateEvent";
+import deleteEvent from "./api/event/deleteEvent";
+import { createEvent } from "./api/event/createEvent";
+import { updateEvent } from "./api/event/updateEvent";
 import useInterval from "./hooks/useInterval";
+import { createNote } from "./api/note/createNote";
 
 export const App = () => {
-  const [family, setFamily] = useState({ schedule: [] });
+  const [family, setFamily] = useState({ schedule: [], notebook: [] });
   const {
     state: { families },
   } = useAppState();
 
-  const loadFamily = async () => {
+  //loads family
+  const loadFamily = React.useCallback(async () => {
     console.log("updatig family");
     try {
       if (families) {
@@ -38,38 +41,28 @@ export const App = () => {
     } catch (e) {
       console.log("error loading family in app");
     }
-  };
+  }, [families]);
 
-  useInterval(loadFamily, 5000);
+  useInterval(loadFamily, 10000);
 
-  /*const deleteEvent = async (data) => {
-    try {
-      const res = await loginApi(data.email, data.password);
-      let family;
-      if (user.families) {
-        family = await getFamily(user.families);
-      }
-      console.log("login fam", family);
-      dispatch({ type: "LOGIN", user: user, family: family });
-      history.push("/");
-    } catch (e) {
-      console.log(e, "error login");
-    }
-  };*/
-
+  //handles update, delete and create event in schedule
   const handleScheduleChange = React.useCallback(
     ({ created, updated, deleted }) => {
       created.forEach(async (created) => {
         try {
           let event = await createEvent(created);
-          event.item2.start = new Date(event.item2.start);
-          event.item2.end = new Date(event.item2.end);
-          setFamily((old) => {
-            let schedule = old.schedule.concat(Object.assign({}, event.item2));
-            let newFamily = { ...old };
-            newFamily.schedule = schedule;
-            return newFamily;
-          });
+          if (event.status === "created") {
+            event.item2.start = new Date(event.item2.start);
+            event.item2.end = new Date(event.item2.end);
+            setFamily((old) => {
+              let schedule = old.schedule.concat(
+                Object.assign({}, event.item2)
+              );
+              let newFamily = { ...old };
+              newFamily.schedule = schedule;
+              return newFamily;
+            });
+          }
         } catch (e) {
           console.log(e, "error creating event");
         }
@@ -77,15 +70,17 @@ export const App = () => {
 
       deleted.forEach(async (deletedEl) => {
         try {
-          await deleteEvent(deletedEl._id);
-          setFamily((old) => {
-            let schedule = old.schedule.filter(
-              (item) => (deletedEl._id === item._id) === undefined
-            );
-            let newFamily = { ...old };
-            newFamily.schedule = schedule;
-            return newFamily;
-          });
+          const res = await deleteEvent(deletedEl._id);
+          if (res.status === "deleted") {
+            setFamily((old) => {
+              let schedule = old.schedule.filter(
+                (item) => (deletedEl._id === item._id) === undefined
+              );
+              let newFamily = { ...old };
+              newFamily.schedule = schedule;
+              return newFamily;
+            });
+          }
         } catch (e) {
           console.log(e, "error deleting event");
         }
@@ -110,10 +105,33 @@ export const App = () => {
     [setFamily]
   );
 
+  const handleCreateNote = async (title) => {
+    const note = {
+      title: title,
+      content: "",
+    };
+
+    try {
+      const res = await createNote(note);
+      console.log(res);
+      if (res.status === "created") {
+        setFamily((old) => {
+          let notebook = old.notebook.concat(Object.assign({}, res.item2));
+          let newFamily = { ...old };
+          newFamily.notebook = notebook;
+          return newFamily;
+        });
+      }
+    } catch (e) {
+      console.log(e, "error creating a note");
+    }
+  };
+
+  //componentDidMount
   useEffect(() => {
     document.title = "Fam.do";
     loadFamily();
-  }, [families]);
+  }, [loadFamily]);
 
   return (
     <div className="App">
@@ -131,6 +149,17 @@ export const App = () => {
                   {...props}
                   schedule={family.schedule}
                   handleScheduleChange={handleScheduleChange}
+                />
+              )}
+            />
+            <Route
+              exact
+              path="/notes"
+              render={(props) => (
+                <Notebook
+                  {...props}
+                  notebook={family.notebook}
+                  handleCreateNote={handleCreateNote}
                 />
               )}
             />

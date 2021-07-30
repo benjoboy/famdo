@@ -1,17 +1,17 @@
-import { BASE_API_URL } from "./constants";
+import { BASE_API_URL } from "../constants";
 
-export async function updateEvent(event) {
+export default async function deleteEvent(eventId) {
   try {
-    const response = await fetch(`${BASE_API_URL}/family/event/update`, {
-      method: "PUT",
+    console.log({ eventId: eventId });
+    const response = await fetch(`${BASE_API_URL}/family/event/${eventId}`, {
+      method: "Delete",
       credentials: "include",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ event }),
     });
     const res = await response.json();
-    if (201 === response.status) {
+    if (202 === response.status) {
       return res;
     } else {
       throw res;

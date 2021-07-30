@@ -1,16 +1,17 @@
-import { BASE_API_URL } from "./constants";
+import { BASE_API_URL } from "../constants";
 
-export async function logoutApi() {
+export async function updateEvent(note) {
   try {
-    const response = await fetch(`${BASE_API_URL}/user/logout`, {
-      method: "POST",
+    const response = await fetch(`${BASE_API_URL}/family/note/update`, {
+      method: "PUT",
       credentials: "include",
       headers: {
         "content-type": "application/json",
       },
+      body: JSON.stringify({ event: note }),
     });
     const res = await response.json();
-    if (200 === response.status) {
+    if (201 === response.status) {
       return res;
     } else {
       throw res;

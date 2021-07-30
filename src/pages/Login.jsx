@@ -7,7 +7,7 @@ import {
 } from "../components/form/validators";
 import PasswordInput from "../components/form/PasswordInput";
 import CustomInput from "../components/form/CustomInput";
-import { loginApi } from "../api/login";
+import { loginApi } from "../api/auth/login";
 import { useAppState } from "../state/state.context";
 import { useHistory } from "react-router";
 import { getFamily } from "../api/getFamily";

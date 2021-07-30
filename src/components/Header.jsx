@@ -8,7 +8,7 @@ import {
   Avatar,
 } from "@progress/kendo-react-layout";
 import { useAppState } from "../state/state.context";
-import { logoutApi } from "../api/logout";
+import { logoutApi } from "../api/auth/logout";
 import { useHistory } from "react-router";
 
 export default function Header(props) {
