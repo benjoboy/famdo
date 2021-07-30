@@ -127,6 +127,23 @@ export const App = () => {
     }
   };
 
+  const handleNoteChange = (content, noteId) => {
+    setFamily((old) => {
+      const noteIndex = old.notebook.findIndex((note) => note._id === noteId);
+      let newNotebook = [...old.notebook];
+
+      newNotebook[noteIndex] = {
+        ...newNotebook[noteIndex],
+        content: content,
+      };
+
+      let newFamily = { ...old };
+      newFamily.notebook = newNotebook;
+      console.log(newFamily);
+      return newFamily;
+    });
+  };
+
   //componentDidMount
   useEffect(() => {
     document.title = "Fam.do";
@@ -160,6 +177,7 @@ export const App = () => {
                   {...props}
                   notebook={family.notebook}
                   handleCreateNote={handleCreateNote}
+                  handleNoteChange={handleNoteChange}
                 />
               )}
             />

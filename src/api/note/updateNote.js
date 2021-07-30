@@ -1,6 +1,6 @@
 import { BASE_API_URL } from "../constants";
 
-export async function updateEvent(note) {
+export async function updateNote(note) {
   try {
     const response = await fetch(`${BASE_API_URL}/family/note/update`, {
       method: "PUT",
@@ -8,7 +8,7 @@ export async function updateEvent(note) {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ event: note }),
+      body: JSON.stringify({ note: note }),
     });
     const res = await response.json();
     if (201 === response.status) {
