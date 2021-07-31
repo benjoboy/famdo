@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Dialog, DialogActionsBar } from "@progress/kendo-react-dialogs";
 
 export default function AddNoteDialog(props) {
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("The title");
   const handleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -15,6 +15,7 @@ export default function AddNoteDialog(props) {
           className="form-control"
           placeholder="Enter title"
           onChange={(e) => handleChange(e)}
+          value={title}
         />
       </div>
       <DialogActionsBar layout={props.layout}>

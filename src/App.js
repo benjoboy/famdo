@@ -17,6 +17,7 @@ import { createEvent } from "./api/event/createEvent";
 import { updateEvent } from "./api/event/updateEvent";
 import useInterval from "./hooks/useInterval";
 import { createNote } from "./api/note/createNote";
+import { deleteNote } from "./api/note/deleteNote";
 
 export const App = () => {
   const [family, setFamily] = useState({ schedule: [], notebook: [] });
@@ -144,6 +145,24 @@ export const App = () => {
     });
   };
 
+  const handleDeleteNote = async (noteId) => {
+    try {
+      const res = await deleteNote(noteId);
+      if (res.status === "deleted") {
+        setFamily((old) => {
+          let notebook = old.notebook.filter((item) => noteId !== item._id);
+          console.log("notebook", notebook);
+          let newFamily = { ...old };
+          newFamily.notebook = notebook;
+          return newFamily;
+        });
+        console.log("noteDeleted");
+      }
+    } catch (e) {
+      console.log(e, "error deleteing note");
+    }
+  };
+
   //componentDidMount
   useEffect(() => {
     document.title = "Fam.do";
@@ -178,6 +197,7 @@ export const App = () => {
                   notebook={family.notebook}
                   handleCreateNote={handleCreateNote}
                   handleNoteChange={handleNoteChange}
+                  deleteNote={handleDeleteNote}
                 />
               )}
             />

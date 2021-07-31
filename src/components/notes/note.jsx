@@ -73,7 +73,7 @@ export default function Note(props) {
         props.notebook.find((notebook) => notebook._id === props.noteId)
       );
     }
-  }, [props.noteId]);
+  }, [props.noteId, props.notebook]);
 
   return (
     <div>
@@ -101,7 +101,17 @@ export default function Note(props) {
         value={selectedNote && selectedNote.content}
         onChange={handleChange}
       />
-      <AutoSaveDisplay saving={saving} />
+      <div className="d-flex">
+        <button
+          className="btn btn-danger"
+          onClick={() => props.deleteNote(props.noteId)}
+        >
+          Delete note
+        </button>
+        <div className="p-2">
+          <AutoSaveDisplay saving={saving} />
+        </div>
+      </div>
     </div>
   );
 }

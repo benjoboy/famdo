@@ -1,9 +1,9 @@
 import { BASE_API_URL } from "../constants";
 
-export async function deleteEvent(eventId) {
+export async function deleteNote(noteId) {
   try {
-    console.log({ eventId: eventId });
-    const response = await fetch(`${BASE_API_URL}/family/event/${eventId}`, {
+    console.log({ eventId: noteId });
+    const response = await fetch(`${BASE_API_URL}/family/note/${noteId}`, {
       method: "Delete",
       credentials: "include",
       headers: {
