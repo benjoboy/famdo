@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Editor, EditorTools } from "@progress/kendo-react-editor";
 import AutoSaveDisplay, { SavingState } from "./autoSaveDisplay";
 import { updateNote } from "../../api/note/updateNote";
@@ -41,6 +41,7 @@ const {
 
 export default function Note(props) {
   const [saving, setSaving] = useState(SavingState.NOT_SAVED);
+  const [selectedNote, setSelectedNote] = useState({});
   let timer = null;
 
   const handleChange = (event) => {
@@ -66,12 +67,13 @@ export default function Note(props) {
     }, 1000);
   };
 
-  let selectedNote;
-  if (props.noteId) {
-    selectedNote = props.notebook.find(
-      (notebook) => notebook._id === props.noteId
-    );
-  }
+  useEffect(() => {
+    if (props.noteId) {
+      setSelectedNote(
+        props.notebook.find((notebook) => notebook._id === props.noteId)
+      );
+    }
+  }, [props.noteId]);
 
   return (
     <div>

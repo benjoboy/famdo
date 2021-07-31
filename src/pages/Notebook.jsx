@@ -7,8 +7,8 @@ export default function Notebook(props) {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    console.log(props.notebook);
-  }, []);
+    if (props.notebook.length > 0) setNoteId(props.notebook[0]._id);
+  }, [props.notebook]);
 
   const handleAddNote = (title) => {
     console.log("djedls");
