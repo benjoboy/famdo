@@ -18,6 +18,7 @@ import { updateEvent } from "./api/event/updateEvent";
 import useInterval from "./hooks/useInterval";
 import { createNote } from "./api/note/createNote";
 import { deleteNote } from "./api/note/deleteNote";
+import { updateNote } from "./api/note/updateNote";
 
 export const App = () => {
   const [family, setFamily] = useState({ schedule: [], notebook: [] });
@@ -145,6 +146,32 @@ export const App = () => {
     });
   };
 
+  const handleTitleChange = async (note) => {
+    try {
+      const res = await updateNote(note);
+      if (res.status === "updated") {
+        setFamily((old) => {
+          const noteIndex = old.notebook.findIndex(
+            (item) => item._id === note._id
+          );
+          let newNotebook = [...old.notebook];
+
+          newNotebook[noteIndex] = {
+            ...newNotebook[noteIndex],
+            title: note.title,
+          };
+
+          let newFamily = { ...old };
+          newFamily.notebook = newNotebook;
+          console.log(newFamily);
+          return newFamily;
+        });
+      }
+    } catch (e) {
+      console.log(e, "error changing title");
+    }
+  };
+
   const handleDeleteNote = async (noteId) => {
     try {
       const res = await deleteNote(noteId);
@@ -198,6 +225,7 @@ export const App = () => {
                   handleCreateNote={handleCreateNote}
                   handleNoteChange={handleNoteChange}
                   deleteNote={handleDeleteNote}
+                  handleTitleChange={handleTitleChange}
                 />
               )}
             />

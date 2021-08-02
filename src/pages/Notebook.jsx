@@ -51,6 +51,7 @@ export default function Notebook(props) {
             noteId={noteId}
             notebook={props.notebook}
             deleteNote={props.deleteNote}
+            handleTitleChange={props.handleTitleChange}
           ></Note>
         </div>
       </div>
