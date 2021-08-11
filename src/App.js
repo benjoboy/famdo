@@ -23,11 +23,16 @@ import { deleteNote } from "./api/note/deleteNote";
 import { updateNote } from "./api/note/updateNote";
 import { createChore } from "./api/chore/createChore";
 import deleteChore from "./api/chore/deleteChore";
+import { choreDone } from "./api/chore/choreDone";
 
 export const App = () => {
-  const [family, setFamily] = useState({ schedule: [], notebook: [] });
+  const [family, setFamily] = useState({
+    schedule: [],
+    notebook: [],
+    chores: [],
+  });
   const {
-    state: { families },
+    state: { families, userId },
   } = useAppState();
 
   //loads family
@@ -228,8 +233,31 @@ export const App = () => {
     }
   };
 
-  const handleChoreCompleted = (choreId) => {
-    console.log("helld0");
+  const handleChoreCompleted = async (choreId) => {
+    try {
+      const res = await choreDone(choreId);
+      if (res.status === "updated") {
+        setFamily((old) => {
+          const choreIndex = old.chores.findIndex(
+            (item) => item._id === choreId
+          );
+          let newChores = [...old.chores];
+
+          newChores[choreIndex] = {
+            ...newChores[choreIndex],
+            completed_by: userId,
+            completion_date: new Date(),
+          };
+
+          let newFamily = { ...old };
+          newFamily.notebook = newChores;
+          console.log(newFamily);
+          return newFamily;
+        });
+      }
+    } catch (e) {
+      console.log(e, "error completing chore");
+    }
   };
 
   //componentDidMount

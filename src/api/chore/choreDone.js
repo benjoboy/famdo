@@ -1,21 +1,21 @@
 import { BASE_API_URL } from "../constants";
 
-export async function loginApi(email, password) {
+export async function choreDone(choreId) {
   try {
-    const response = await fetch(`${BASE_API_URL}/user/login`, {
-      method: "POST",
+    console.log(choreId);
+    const response = await fetch(`${BASE_API_URL}/family/chore/done`, {
+      method: "PUT",
       credentials: "include",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ password, email }),
+      body: JSON.stringify({ completed: true, id: choreId }),
     });
-    const user = await response.json();
-    console.log(user);
+    const res = await response.json();
     if (201 === response.status) {
-      return user;
+      return res;
     } else {
-      throw user;
+      throw res;
     }
   } catch (e) {
     if ("string" === typeof e) {

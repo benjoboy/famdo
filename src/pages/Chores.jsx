@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddChoreDialog from "../components/chores/AddChoreDialog";
 import { ListView } from "@progress/kendo-react-listview";
 import ChoreItem, { MyHeader } from "../components/chores/CustomListViewItem";
 
 export default function Chores(props) {
   const [showModal, setShowModal] = useState(false);
+  const [chores, setChores] = useState([]);
   const handleAddChore = (name, description, points, deadline) => {
     const chore = { name, description, points, deadline };
     props.handleCreateChore(chore);
@@ -14,9 +15,21 @@ export default function Chores(props) {
     props.handleChoreDelete(choreId);
   };
 
+  const handleCompletion = (choreId) => {
+    props.handleChoreCompleted(choreId);
+  };
+
   const MyCustomItem = (props) => (
-    <ChoreItem {...props} handleChoreDelete={handleDelete} />
+    <ChoreItem
+      {...props}
+      handleChoreDelete={handleDelete}
+      handleChoreCompleted={handleCompletion}
+    />
   );
+
+  useEffect(() => {
+    setChores(props.chores.filter((chore) => chore.completed === false));
+  }, [props.chores]);
 
   return (
     <div>
@@ -34,7 +47,7 @@ export default function Chores(props) {
         + Chore
       </button>
 
-      <ListView header={MyHeader} data={props.chores} item={MyCustomItem} />
+      <ListView header={MyHeader} data={chores} item={MyCustomItem} />
     </div>
   );
 }

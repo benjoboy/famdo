@@ -4,6 +4,7 @@ export const stateReducer = (state, action) => {
       sessionStorage.setItem("user", action.user);
       return {
         ...state,
+        userId: action.user._id,
         isLoggedIn: true,
         name: action.user.name,
         surname: action.user.surname,
@@ -16,6 +17,7 @@ export const stateReducer = (state, action) => {
 
       return {
         ...state,
+        userId: "",
         isLoggedIn: false,
         name: "",
         surname: "",

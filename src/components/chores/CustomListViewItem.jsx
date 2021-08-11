@@ -82,6 +82,7 @@ export default function ChoreItem(props) {
                 style={{
                   marginRight: 5,
                 }}
+                onClick={() => props.handleChoreCompleted(chore._id)}
               >
                 Completed
               </button>

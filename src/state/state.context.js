@@ -3,6 +3,7 @@ import { useContext, createContext } from "react";
 export const StateContext = createContext({
   isLoggedIn: false,
   localeId: "en-US",
+  userId: "",
   name: "",
   surname: "",
   email: "",
