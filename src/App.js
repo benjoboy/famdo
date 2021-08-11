@@ -4,12 +4,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
 
 import Register from "./pages/Register";
+import Login from "./pages/Login";
+import Schedule from "./pages/Schedule";
+import Settings from "./pages/Settings";
+import Notebook from "./pages/Notebook";
+import Photos from "./pages/Photos";
+import Chores from "./pages/Chores";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
-import Login from "./pages/Login";
-import Settings from "./pages/Settings";
-import Schedule from "./pages/Schedule";
-import Notebook from "./pages/Notebook";
 import { getFamily } from "./api/getFamily";
 import { useAppState } from "./state/state.context";
 import deleteEvent from "./api/event/deleteEvent";
@@ -19,6 +21,8 @@ import useInterval from "./hooks/useInterval";
 import { createNote } from "./api/note/createNote";
 import { deleteNote } from "./api/note/deleteNote";
 import { updateNote } from "./api/note/updateNote";
+import { createChore } from "./api/chore/createChore";
+import deleteChore from "./api/chore/deleteChore";
 
 export const App = () => {
   const [family, setFamily] = useState({ schedule: [], notebook: [] });
@@ -45,7 +49,7 @@ export const App = () => {
     }
   }, [families]);
 
-  useInterval(loadFamily, 10000);
+  useInterval(loadFamily, 15000);
 
   //handles update, delete and create event in schedule
   const handleScheduleChange = React.useCallback(
@@ -190,6 +194,44 @@ export const App = () => {
     }
   };
 
+  const handleCreateChore = async (chore) => {
+    try {
+      const res = await createChore(chore);
+      if (res.status === "created") {
+        setFamily((old) => {
+          let chores = old.chores.concat(Object.assign({}, res.item2));
+          let newFamily = { ...old };
+          newFamily.chores = chores;
+          return newFamily;
+        });
+      }
+    } catch (e) {
+      console.log(e, "error deleteing note");
+    }
+  };
+
+  const handleChoreDelete = async (choreId) => {
+    try {
+      const res = await deleteChore(choreId);
+      if (res.status === "deleted") {
+        setFamily((old) => {
+          let chores = old.chores.filter((item) => choreId !== item._id);
+          console.log("chores", chores);
+          let newFamily = { ...old };
+          newFamily.chores = chores;
+          return newFamily;
+        });
+        console.log("chore deleted");
+      }
+    } catch (e) {
+      console.log(e, "error deleteing chore");
+    }
+  };
+
+  const handleChoreCompleted = (choreId) => {
+    console.log("helld0");
+  };
+
   //componentDidMount
   useEffect(() => {
     document.title = "Fam.do";
@@ -229,6 +271,19 @@ export const App = () => {
                 />
               )}
             />
+            <Route
+              exact
+              path="/chores"
+              render={(props) => (
+                <Chores
+                  chores={family.chores}
+                  handleCreateChore={handleCreateChore}
+                  handleChoreCompleted={handleChoreCompleted}
+                  handleChoreDelete={handleChoreDelete}
+                />
+              )}
+            />
+            <Route exact path="/photos" render={(props) => <Photos />} />
           </Switch>
         </DrawerRouterContainer>
       </Router>

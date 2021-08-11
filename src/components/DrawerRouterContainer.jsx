@@ -11,6 +11,7 @@ const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
   { name: "schedule", icon: "k-i-calendar", route: "/schedule" },
   { name: "notes", icon: "k-i-dictionary-add", route: "/notes" },
+  { name: "chores", icon: "k-i-trash", route: "/chores" },
   { name: "profile", icon: "k-i-user", route: "/profile" },
   { separator: true },
   { name: "info", icon: "k-i-information", route: "/info" },

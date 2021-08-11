@@ -41,7 +41,7 @@ const {
 
 export default function Note(props) {
   const [saving, setSaving] = useState(SavingState.NOT_SAVED);
-  const [selectedNote, setSelectedNote] = useState({});
+  const [selectedNote, setSelectedNote] = useState({ title: "" });
   let timer = null;
 
   const handleChange = (event) => {

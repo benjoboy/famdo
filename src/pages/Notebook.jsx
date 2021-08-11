@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import AddNoteDialog from "../components/notes/addNoteDialog";
-import Note from "../components/notes/note";
+import AddNoteDialog from "../components/notes/AddNoteDialog";
+import Note from "../components/notes/Note";
 
 export default function Notebook(props) {
   const [noteId, setNoteId] = useState("");
