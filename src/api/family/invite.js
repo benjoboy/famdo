@@ -1,13 +1,14 @@
-import { BASE_API_URL } from "./constants";
+import { BASE_API_URL } from "../constants";
 
-export async function getFamily(familyId) {
+export async function invite(familyId, email) {
   try {
-    const response = await fetch(`${BASE_API_URL}/family/${familyId}`, {
-      method: "GET",
+    const response = await fetch(`${BASE_API_URL}/family/invite`, {
+      method: "POST",
       credentials: "include",
       headers: {
         "content-type": "application/json",
       },
+      body: JSON.stringify({ familyId, email }),
     });
     const res = await response.json();
     if (200 === response.status) {

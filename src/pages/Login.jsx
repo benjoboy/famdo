@@ -10,7 +10,7 @@ import CustomInput from "../components/form/CustomInput";
 import { loginApi } from "../api/auth/login";
 import { useAppState } from "../state/state.context";
 import { useHistory } from "react-router";
-import { getFamily } from "../api/getFamily";
+import { getFamily } from "../api/family/getFamily";
 
 export default function Login() {
   const { dispatch } = useAppState();
@@ -23,7 +23,6 @@ export default function Login() {
       if (user.families) {
         family = await getFamily(user.families);
       }
-      console.log("login fam", family);
       dispatch({ type: "LOGIN", user: user, family: family });
       history.push("/");
     } catch (e) {

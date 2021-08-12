@@ -1,51 +1,158 @@
 import React, { useEffect, useState } from "react";
-import { getFamily } from "../api/getFamily";
+import { getFamily } from "../api/family/getFamily";
 import { getUser } from "../api/getUser";
 import InviteItem, { MyHeader } from "../components/ListViewCustomization";
 import { ListView } from "@progress/kendo-react-listview";
 import { useAppState } from "../state/state.context";
+import AddFamilyDialog from "../components/settings/AddFamilyDialog";
+import { createFamily } from "../api/family/createFamily";
+import { Form, Field, FormElement } from "@progress/kendo-react-form";
+import { Input } from "@progress/kendo-react-inputs";
+import { invite } from "../api/family/invite";
+
+const emailRegex = new RegExp(/\S+@\S+\.\S+/);
+
+const emailValidator = (value) =>
+  emailRegex.test(value) ? "" : "Please enter a valid email.";
 
 export default function Settings() {
-  const [invitedFamilies, setFamilies] = useState([]);
+  const [invitedFamilies, setInvitedFamilies] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+
   const {
-    state: { families, family },
+    state: { families, family, userId },
   } = useAppState();
 
+  const handleCreateFamily = async (name) => {
+    setShowModal(false);
+    try {
+      const res = await createFamily(name);
+      console.log(res);
+      if (res.status === "created") {
+        window.location.reload();
+      }
+    } catch (e) {
+      console.log(e, "error creating a family");
+    }
+  };
+
   useEffect(() => {
+    console.log("user2", userId);
     const loadInvites = async () => {
-      const user = await getUser();
+      const user = await getUser(userId);
+      console.log(user);
       if (user.invitedFamilies.lenght !== 0) {
-        let families = [];
+        let inviteds = [];
         for (const invite of user.invitedFamilies) {
-          families.push(await getFamily(invite.id));
+          inviteds.push(await getFamily(invite.id));
         }
-        setFamilies(families);
+        setInvitedFamilies(inviteds);
       }
     };
-    loadInvites();
-  }, [families]);
+    if (userId) loadInvites();
+  }, [families, userId]);
 
   const MyCustomItem = (props) => (
     <InviteItem
       {...props}
       families={invitedFamilies}
-      setFamilies={setFamilies}
+      setFamilies={setInvitedFamilies}
     />
   );
 
+  const handleSubmit = async (dataItem) => {
+    try {
+      const res = await invite(families, dataItem.email);
+      console.log(res);
+      if (res.status === "invited") {
+        setErrorMessage("User was invited");
+      } else {
+        if (res.message) setErrorMessage("user was not invited: ", res.message);
+        else setErrorMessage("Something went wrong");
+      }
+    } catch (e) {
+      console.log(e, "error creating a note");
+    }
+  };
+
   return (
     <div>
-      <h1>current family: &nbsp;{family ? family.name : ""}</h1>
-      <h3>
-        Current family:&nbsp;
-        {families && families.length > 0 ? families[0].id : ""}
-      </h3>
-      <ListView
-        setFamilies={setFamilies}
-        header={MyHeader}
-        data={invitedFamilies}
-        item={MyCustomItem}
-      />
+      <h1>{errorMessage}</h1>
+      {showModal && (
+        <AddFamilyDialog
+          handleCreateFamily={handleCreateFamily}
+          title="Create Family"
+          onClose={() => setShowModal(false)}
+        >
+          {" "}
+        </AddFamilyDialog>
+      )}
+      {family ? <h1>My family: &nbsp;{family.name}</h1> : ""}
+
+      {families ? (
+        userId === family.owner ? (
+          <Form
+            className="k-form-inline"
+            onSubmit={handleSubmit}
+            render={(formRenderProps) => (
+              <FormElement
+                style={{
+                  minWidth: 800,
+                  maxWidth: 900,
+                }}
+                horizontal={true}
+              >
+                <fieldset className="k-form-fieldset ">
+                  <legend className={"k-form-legend"}>Invite a member</legend>
+                  <div
+                    style={{
+                      display: "flex",
+                    }}
+                  >
+                    <div className="">
+                      <Field
+                        name={"email"}
+                        type={"email"}
+                        component={Input}
+                        label={"Email"}
+                        validator={emailValidator}
+                      />
+                    </div>
+                    <div className="k-form-buttons ml-1">
+                      <button
+                        className="ml-1 k-button"
+                        type={"submit"}
+                        disabled={!formRenderProps.allowSubmit}
+                      >
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </fieldset>
+              </FormElement>
+            )}
+          />
+        ) : (
+          ""
+        )
+      ) : (
+        <button className="btn btn-primary" onClick={() => setShowModal(true)}>
+          Create Family
+        </button>
+      )}
+
+      {family && userId !== family.owner ? (
+        <ListView
+          className="mt-2"
+          setFamilies={setInvitedFamilies}
+          header={MyHeader}
+          data={invitedFamilies}
+          item={MyCustomItem}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { ListViewHeader } from "@progress/kendo-react-listview";
-import { acceptInvite } from "../api/acceptInvite";
-import { declineInvite } from "../api/declineInvite";
+import { acceptInvite } from "../api/family/acceptInvite";
+import { declineInvite } from "../api/family/declineInvite";
 export default function InviteItem(props) {
   let family = props.dataItem;
   const handleInvite = async (id, accept) => {
@@ -8,6 +8,7 @@ export default function InviteItem(props) {
       const res = await acceptInvite(id);
       if (res.status === "accepted") {
         console.log("accepted");
+        window.location.reload();
         //const families = props.families.filter((family) => family._id !== id);
       } else {
         console.log(res);

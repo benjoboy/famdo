@@ -1,8 +1,8 @@
 import { BASE_API_URL } from "./constants";
 
-export async function getUser() {
+export async function getUser(id) {
   try {
-    const response = await fetch(`${BASE_API_URL}/user`, {
+    const response = await fetch(`${BASE_API_URL}/user/${id}`, {
       method: "GET",
       credentials: "include",
       headers: {

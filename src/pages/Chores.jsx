@@ -6,6 +6,7 @@ import ChoreItem, { MyHeader } from "../components/chores/CustomListViewItem";
 export default function Chores(props) {
   const [showModal, setShowModal] = useState(false);
   const [chores, setChores] = useState([]);
+
   const handleAddChore = (name, description, points, deadline) => {
     const chore = { name, description, points, deadline };
     props.handleCreateChore(chore);
@@ -15,8 +16,8 @@ export default function Chores(props) {
     props.handleChoreDelete(choreId);
   };
 
-  const handleCompletion = (choreId) => {
-    props.handleChoreCompleted(choreId);
+  const handleCompletion = (choreId, points) => {
+    props.handleChoreCompleted(choreId, points);
   };
 
   const MyCustomItem = (props) => (
@@ -31,8 +32,14 @@ export default function Chores(props) {
     setChores(props.chores.filter((chore) => chore.completed === false));
   }, [props.chores]);
 
+  useEffect(() => {
+    if (props.members) {
+      props.members.forEach((member) => {});
+    }
+  }, [props.chores]);
+
   return (
-    <div>
+    <div className="m-2">
       {showModal && (
         <AddChoreDialog
           handleAddChore={handleAddChore}
@@ -42,8 +49,10 @@ export default function Chores(props) {
           {" "}
         </AddChoreDialog>
       )}
-      <h2>chores</h2>
-      <button onClick={() => setShowModal(true)} className="btn btn-primary">
+      <button
+        onClick={() => setShowModal(true)}
+        className="btn btn-primary mb-2"
+      >
         + Chore
       </button>
 

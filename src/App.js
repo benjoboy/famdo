@@ -12,7 +12,7 @@ import Photos from "./pages/Photos";
 import Chores from "./pages/Chores";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
-import { getFamily } from "./api/getFamily";
+import { getFamily } from "./api/family/getFamily";
 import { useAppState } from "./state/state.context";
 import deleteEvent from "./api/event/deleteEvent";
 import { createEvent } from "./api/event/createEvent";
@@ -233,9 +233,9 @@ export const App = () => {
     }
   };
 
-  const handleChoreCompleted = async (choreId) => {
+  const handleChoreCompleted = async (choreId, points) => {
     try {
-      const res = await choreDone(choreId);
+      const res = await choreDone(choreId, points);
       if (res.status === "updated") {
         setFamily((old) => {
           const choreIndex = old.chores.findIndex(
@@ -308,6 +308,7 @@ export const App = () => {
                   handleCreateChore={handleCreateChore}
                   handleChoreCompleted={handleChoreCompleted}
                   handleChoreDelete={handleChoreDelete}
+                  members={family.members}
                 />
               )}
             />

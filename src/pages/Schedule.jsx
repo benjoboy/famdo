@@ -14,6 +14,7 @@ export default function Schedule(props) {
 
   return (
     <Scheduler
+      className=""
       defaultView="day"
       data={props.schedule}
       onDataChange={props.handleScheduleChange}

@@ -33,6 +33,7 @@ export default function AddChoreDialog(props) {
         <label htmlFor="name">Name</label>
         <input
           id="name"
+          name="name"
           type="text"
           className="form-control"
           placeholder="Chore name"

@@ -5,7 +5,7 @@ import { Drawer, DrawerContent } from "@progress/kendo-react-layout";
 import Header from "./Header";
 import { useAppState } from "../state/state.context";
 import { loggedIn } from "../api/auth/loggedIn";
-import { getFamily } from "../api/getFamily";
+import { getFamily } from "../api/family/getFamily";
 
 const items = [
   { name: "dashboard", icon: "k-i-grid", selected: true, route: "/" },
@@ -24,7 +24,7 @@ export default function DrawerRouterContainer(props) {
     window.innerWidth < 768
   );
   const history = useHistory();
-  const { dispatch } = useAppState();
+  const { dispatch, userId } = useAppState();
 
   const resizeWindow = () => {
     setIsSmallerScreen(window.innerWidth < 768);
@@ -44,13 +44,15 @@ export default function DrawerRouterContainer(props) {
       try {
         const res = await loggedIn();
         let family;
+        console.log(res);
         if (res.user.families) {
           family = await getFamily(res.user.families);
         }
         if (res.logged_in)
           dispatch({ type: "LOGIN", user: res.user, family: family });
+        else history.push("/login");
       } catch (e) {
-        console.log(e, "error login");
+        console.log(e, "error checking login status");
       }
     };
 
@@ -58,10 +60,17 @@ export default function DrawerRouterContainer(props) {
     checkLoggedIn();
     window.addEventListener("resize", resizeWindow);
     resizeWindow();
+    /*console.log("user", userId);
+    if (
+      (!userId || userId === "") &&
+      window.location.pathname !== "/register"
+    ) {
+      history.push("/login");
+    }*/
     return () => {
       window.removeEventListener("resize", resizeWindow);
     };
-  }, [dispatch]);
+  }, [dispatch, userId, history]);
 
   const getSelectedItem = (pathName) => {
     let currentPath;

@@ -1,6 +1,6 @@
 import { ListViewHeader } from "@progress/kendo-react-listview";
-import { acceptInvite } from "../../api/acceptInvite";
-import { declineInvite } from "../../api/declineInvite";
+import { acceptInvite } from "../../api/family/acceptInvite";
+import { declineInvite } from "../../api/family/declineInvite";
 import {
   Card,
   CardTitle,
@@ -82,7 +82,9 @@ export default function ChoreItem(props) {
                 style={{
                   marginRight: 5,
                 }}
-                onClick={() => props.handleChoreCompleted(chore._id)}
+                onClick={() =>
+                  props.handleChoreCompleted(chore._id, chore.points)
+                }
               >
                 Completed
               </button>

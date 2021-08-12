@@ -43,6 +43,7 @@ export const stateReducer = (state, action) => {
       else
         return {
           ...state,
+          userId: "",
         };
     default:
       return state;

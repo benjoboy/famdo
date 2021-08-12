@@ -23,6 +23,11 @@ export default function Notebook(props) {
     ));
   }
 
+  const handleDeleteNote = (noteId) => {
+    setNoteId("");
+    props.deleteNote(noteId);
+  };
+
   return (
     <div className="container-fluid">
       {showModal && (
@@ -46,13 +51,17 @@ export default function Notebook(props) {
           <ul>{noteList}</ul>
         </div>
         <div className="col-10">
-          <Note
-            handleNoteChange={props.handleNoteChange}
-            noteId={noteId}
-            notebook={props.notebook}
-            deleteNote={props.deleteNote}
-            handleTitleChange={props.handleTitleChange}
-          ></Note>
+          {noteId !== "" ? (
+            <Note
+              handleNoteChange={props.handleNoteChange}
+              noteId={noteId}
+              notebook={props.notebook}
+              deleteNote={handleDeleteNote}
+              handleTitleChange={props.handleTitleChange}
+            ></Note>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

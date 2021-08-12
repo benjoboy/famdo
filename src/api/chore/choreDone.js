@@ -1,6 +1,6 @@
 import { BASE_API_URL } from "../constants";
 
-export async function choreDone(choreId) {
+export async function choreDone(choreId, points) {
   try {
     console.log(choreId);
     const response = await fetch(`${BASE_API_URL}/family/chore/done`, {
@@ -9,7 +9,7 @@ export async function choreDone(choreId) {
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify({ completed: true, id: choreId }),
+      body: JSON.stringify({ completed: true, id: choreId, points: points }),
     });
     const res = await response.json();
     if (201 === response.status) {
