@@ -63,22 +63,29 @@ export default function Settings() {
 
   const handleSubmit = async (dataItem) => {
     try {
+      console.log("ERFDFSF");
       const res = await invite(families, dataItem.email);
       console.log(res);
       if (res.status === "invited") {
+        console.log("he was invited");
         setErrorMessage("User was invited");
+        console.log("invited");
       } else {
         if (res.message) setErrorMessage("user was not invited: ", res.message);
         else setErrorMessage("Something went wrong");
+        console.log(res);
       }
     } catch (e) {
-      console.log(e, "error creating a note");
+      if (e.message) {
+        setErrorMessage("user was not invited: " + e.message);
+        console.log(e.message);
+      } else setErrorMessage("Something went wrong");
+      console.log(e);
     }
   };
 
   return (
-    <div>
-      <h1>{errorMessage}</h1>
+    <div className="p-2">
       {showModal && (
         <AddFamilyDialog
           handleCreateFamily={handleCreateFamily}
@@ -88,7 +95,7 @@ export default function Settings() {
           {" "}
         </AddFamilyDialog>
       )}
-      {family ? <h1>My family: &nbsp;{family.name}</h1> : ""}
+      {family ? <h4>My family: &nbsp;{family.name}</h4> : ""}
 
       {families ? (
         userId === family.owner ? (
@@ -104,7 +111,7 @@ export default function Settings() {
                 horizontal={true}
               >
                 <fieldset className="k-form-fieldset ">
-                  <legend className={"k-form-legend"}>Invite a member</legend>
+                  <legend>Invite a member</legend>
                   <div
                     style={{
                       display: "flex",
@@ -129,6 +136,9 @@ export default function Settings() {
                       </button>
                     </div>
                   </div>
+                  <p className="p-2">
+                    <b>{errorMessage}</b>
+                  </p>
                 </fieldset>
               </FormElement>
             )}
@@ -142,17 +152,13 @@ export default function Settings() {
         </button>
       )}
 
-      {family && userId !== family.owner ? (
-        <ListView
-          className="mt-2"
-          setFamilies={setInvitedFamilies}
-          header={MyHeader}
-          data={invitedFamilies}
-          item={MyCustomItem}
-        />
-      ) : (
-        ""
-      )}
+      <ListView
+        className="mt-2"
+        setFamilies={setInvitedFamilies}
+        header={MyHeader}
+        data={invitedFamilies}
+        item={MyCustomItem}
+      />
     </div>
   );
 }
