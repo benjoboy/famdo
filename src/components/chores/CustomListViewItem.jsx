@@ -1,6 +1,4 @@
 import { ListViewHeader } from "@progress/kendo-react-listview";
-import { acceptInvite } from "../../api/family/acceptInvite";
-import { declineInvite } from "../../api/family/declineInvite";
 import {
   Card,
   CardTitle,
@@ -9,25 +7,6 @@ import {
 } from "@progress/kendo-react-layout";
 export default function ChoreItem(props) {
   let chore = props.dataItem;
-
-  const handleInvite = async (id, accept) => {
-    if (accept) {
-      const res = await acceptInvite(id);
-      if (res.status === "accepted") {
-        console.log("accepted");
-        //const families = props.families.filter((family) => family._id !== id);
-      } else {
-        console.log(res);
-      }
-    } else {
-      const res = await declineInvite(id);
-      if (res.status === "declined") {
-        //const families = props.families.filter((family) => family._id !== id);
-      } else {
-        console.log(res);
-      }
-    }
-  };
 
   return (
     <div

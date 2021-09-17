@@ -40,7 +40,7 @@ export default function Notebook(props) {
         </AddNoteDialog>
       )}
       <div className="row ">
-        <div className="col-2 mt-2">
+        <div className="col-4 mt-2">
           <button
             className="btn  btn-primary  mb-2"
             onClick={() => setShowModal(true)}
@@ -50,7 +50,7 @@ export default function Notebook(props) {
           </button>
           <ul>{noteList}</ul>
         </div>
-        <div className="col-10">
+        <div className="col-8">
           {noteId !== "" ? (
             <Note
               handleNoteChange={props.handleNoteChange}

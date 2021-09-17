@@ -23,7 +23,7 @@ export default function AddFamilyDialog(props) {
           className="k-button k-primary"
           onClick={() => props.handleCreateFamily(name)}
         >
-          Create note
+          Create family
         </button>
       </DialogActionsBar>
     </Dialog>

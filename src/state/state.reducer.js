@@ -25,11 +25,6 @@ export const stateReducer = (state, action) => {
         families: "",
         family: null,
       };
-    case "SELECT_FILTER":
-      return {
-        ...state,
-        selectedFilter: action.filter,
-      };
     case "CHECK_SESSION":
       const loggedUser = sessionStorage.getItem("user");
       if (loggedUser)

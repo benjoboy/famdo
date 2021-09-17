@@ -14,10 +14,12 @@ export default function Chores(props) {
   };
   const handleDelete = (choreId) => {
     props.handleChoreDelete(choreId);
+    window.location.reload();
   };
 
   const handleCompletion = (choreId, points) => {
     props.handleChoreCompleted(choreId, points);
+    window.location.reload();
   };
 
   const MyCustomItem = (props) => (
@@ -30,12 +32,6 @@ export default function Chores(props) {
 
   useEffect(() => {
     setChores(props.chores.filter((chore) => chore.completed === false));
-  }, [props.chores]);
-
-  useEffect(() => {
-    if (props.members) {
-      props.members.forEach((member) => {});
-    }
   }, [props.chores]);
 
   return (

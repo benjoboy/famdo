@@ -11,7 +11,7 @@ export async function invite(familyId, email) {
       body: JSON.stringify({ familyId, email }),
     });
     const res = await response.json();
-    if (200 === response.status) {
+    if (201 === response.status) {
       return res;
     } else {
       throw res;

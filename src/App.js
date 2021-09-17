@@ -8,7 +8,6 @@ import Login from "./pages/Login";
 import Schedule from "./pages/Schedule";
 import Settings from "./pages/Settings";
 import Notebook from "./pages/Notebook";
-import Photos from "./pages/Photos";
 import Chores from "./pages/Chores";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import DrawerRouterContainer from "./components/DrawerRouterContainer";
@@ -24,6 +23,7 @@ import { updateNote } from "./api/note/updateNote";
 import { createChore } from "./api/chore/createChore";
 import deleteChore from "./api/chore/deleteChore";
 import { choreDone } from "./api/chore/choreDone";
+import Dashboard from "./pages/Dashboard";
 
 export const App = () => {
   const [family, setFamily] = useState({
@@ -54,7 +54,7 @@ export const App = () => {
     }
   }, [families]);
 
-  useInterval(loadFamily, 15000);
+  useInterval(loadFamily, 30000);
 
   //handles update, delete and create event in schedule
   const handleScheduleChange = React.useCallback(
@@ -271,6 +271,11 @@ export const App = () => {
       <Router>
         <DrawerRouterContainer>
           <Switch>
+            <Route
+              exact
+              path="/"
+              render={(props) => <Dashboard members={family.members} />}
+            />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/settings" component={Settings} />
@@ -312,7 +317,6 @@ export const App = () => {
                 />
               )}
             />
-            <Route exact path="/photos" render={(props) => <Photos />} />
           </Switch>
         </DrawerRouterContainer>
       </Router>

@@ -1,11 +1,8 @@
 import React from "react";
-import { Button } from "@progress/kendo-react-buttons";
-import { Badge, BadgeContainer } from "@progress/kendo-react-indicators";
 import {
   AppBar,
   AppBarSection,
   AppBarSpacer,
-  Avatar,
 } from "@progress/kendo-react-layout";
 import { useAppState } from "../state/state.context";
 import { logoutApi } from "../api/auth/logout";
@@ -26,7 +23,7 @@ export default function Header(props) {
     } catch (e) {
       console.log(e, "error logout");
     } finally {
-      history.push("/");
+      history.push("/login");
     }
   };
 
@@ -55,21 +52,17 @@ export default function Header(props) {
           }}
         />
 
-        <AppBarSection className="navbar">
+        <AppBarSpacer />
+        <AppBarSection className="actions navbar">
           <ul>
             <li>
-              <span>What's New</span>
-            </li>
-            <li>
-              <span>About</span>
-            </li>
-            <li>
-              <span>Contacts</span>
+              <a href="/settings ">Settings</a>
             </li>
           </ul>
         </AppBarSection>
-
-        <AppBarSpacer />
+        <AppBarSection>
+          <span className="k-appbar-separator" />
+        </AppBarSection>
 
         <AppBarSection className="actions navbar">
           <ul>
@@ -84,33 +77,9 @@ export default function Header(props) {
               </li>
             )}
           </ul>
-          <Button className="k-button k-button-clear">
-            <BadgeContainer>
-              <span className="k-icon k-i-bell" />
-              <Badge
-                shape="dot"
-                themeColor="info"
-                size="small"
-                position="inside"
-              />
-            </BadgeContainer>
-          </Button>
         </AppBarSection>
 
-        <AppBarSection>
-          <span className="k-appbar-separator" />
-        </AppBarSection>
-
-        <AppBarSection>
-          <Avatar shape="circle" type="image"></Avatar>
-        </AppBarSection>
-        <AppBarSection className="actions navbar">
-          <ul>
-            <li>
-              <a href="/settings ">Settings</a>
-            </li>
-          </ul>
-        </AppBarSection>
+        <AppBarSection></AppBarSection>
       </AppBar>
     </React.Fragment>
   );
